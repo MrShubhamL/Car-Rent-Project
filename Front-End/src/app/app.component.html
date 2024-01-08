@@ -1,8 +1,7 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav *ngIf="!isAdminLoggedIn && !isCustomerLoggedIn" class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Rent A Car</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand brandItem" href="">Rent Car</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -11,15 +10,64 @@
         </li>
       </ul>
       <form class="d-flex" role="search">
-        <div class="navbar-nav me-auto mb-2 mb-lg-0">
-          <a class="nav-link active" routerLink="" routerLinkActive="active">Home</a>
-          <a class="nav-link active" routerLink="" routerLinkActive="active">About</a>
-          <a class="nav-link active" routerLink="" routerLinkActive="active">Contact Us</a>
-          <a routerLink="/login" mat-button color="primary" >Login</a>
-          <a routerLink="/register" mat-button color="primary" >Register</a>
-        </div>
+        <ul class="navbar-nav me-auto  menueItem">
+          <li class="nav-item">
+            <a class="nav-link menueItem" routerLink="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link menueItem">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link menueItem">Contact</a>
+          </li>
+        </ul>
+        <a mat-stroked-button color="primary" routerLink="/login" >SignIn</a>
+        <a mat-stroked-button color="primary" routerLink="/registration" >SignUp</a>
       </form>
     </div>
   </div>
 </nav>
+
+
+<!--        This is Admin navigation        -->
+<nav *ngIf="isAdminLoggedIn" class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand brandItem" href="/admin/dashboard">Rent Car</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <a mat-stroked-button color="primary" routerLink="/admin/dashboard" >Dashboard</a>
+        <a mat-stroked-button color="primary" routerLink="/admin/car" >Post Car</a>
+        <a mat-stroked-button color="primary" (click)="logout()" >Logout</a>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<!--        This is customer navigation        -->
+<nav *ngIf="isCustomerLoggedIn" class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand brandItem" href="/customer/dashboard">Rent Car</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <a mat-stroked-button color="primary" routerLink="/customer/dashboard" >Dashboard</a>
+        <a mat-stroked-button color="primary" (click)="logout()" >Logout</a>
+      </form>
+    </div>
+  </div>
+</nav>
+
 <router-outlet></router-outlet>

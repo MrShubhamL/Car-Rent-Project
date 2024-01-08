@@ -1,21 +1,35 @@
-<div class="col-md-6 offset-md-3 login-form-1 mt-5">
-  <h2 class="text-center ForgetPwd mb-2">LOGIN</h2>
-  <form class="g-3" [formGroup]="loginForm" novalidate autocomplete="false" >
-      <div class="form-group m-3">
-          <input type="text" ng-input class="form-control" placeholder="Your Email *" formControlName="email"   required/>
+<div class="row">
+  <div class="col-md-6 offset-md-3 mt-5 login-form-1">
+    <h3>CUSTOMER LOGIN</h3>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-2">
+        <input type="text" class="form-control"
+         placeholder="Your Email *"
+         formControlName="email"
+         (change)="formValidate()"
+         [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+         />
+         @if (submitted && f['email'].errors) {
+          <label class="form-label mt-1 text-danger">Email is required!</label>
+         }
       </div>
-      <div class="form-group m-3">
-          <input type="password"  class="form-control" placeholder="Your Password *" formControlName="password"  required />
+      <div class="form-group mb-3">
+        <input type="password" class="form-control"
+         placeholder="Your Password *"
+         formControlName="password"
+         [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+         @if (submitted && f['password'].errors) {
+          <label class="form-label mt-1 text-danger">Password should be minimum 6 char!</label>
+         }
       </div>
-      <div class="form-group m-3">
-          <button mat-raised-button color="primary" [disabled]="loginForm.invalid" (click)="login()" class="btnSubmit">Login</button>
+
+      <div class="form-group mb-2">
+        <button mat-raised-button color="primary"
+        type="submit" [disabled]="form.invalid">Login Now</button>
       </div>
-      <div class="form-group mx-3">
-          <a routerLink="" class="ForgetPwd">Forget Password?</a>
-          <a routerLink="/register" class="ForgetPwd mx-3">Create New Account?</a>
+      <div class="form-group mb-2">
+        <a href="" class="ForgetPwd">Forget Password?</a>
+        <a href="" class="ForgetPwd mx-2">Create new account?</a>
       </div>
-      <div class="form-group mt-3">
-        <mat-progress-bar *ngIf="isSpinning" mode="indeterminate"></mat-progress-bar>
-      </div>
-  </form>
-</div>
+    </form>
+  </div>

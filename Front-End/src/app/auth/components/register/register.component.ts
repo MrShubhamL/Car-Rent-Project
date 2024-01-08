@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ConfirmPasswordValidator } from './confirm-password.validator';
 import { AuthService } from '../../services/auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -9,48 +10,69 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
+  form: FormGroup = new FormGroup({
+    name: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
+    acceptTerms: new FormControl(false)
+  });
+  submitted = false;
 
-  isSpinning:boolean = false;
-  registerForm! : FormGroup
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
 
-  constructor(private fb: FormBuilder, private authServe: AuthService) {}
+  constructor( private formBuilder: FormBuilder,
+     private service: AuthService,
+     private toastr: ToastrService
+     ){}
 
   ngOnInit(): void {
-    this.registerForm = this.fb.group({
-      name:['',[Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required, this.confirmPaswordValidator]]
+    this.form = this.formBuilder.group(
+      {
+        name: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(40)
+          ]
+        ],
+        confirmPassword: ['', Validators.required],
+        acceptTerms: [false, Validators.requiredTrue],
+      },
+      {
+        validator: ConfirmPasswordValidator("password", "confirmPassword")
+      }
+    );
+
+
+  }
+
+
+  formValidate(){
+    this.submitted=true
+  }
+
+  onSubmit(){
+    this.service.register(this.form.value).subscribe(res=>{
+      if(res!=null){
+        this.resetForm()
+        this.toastr.success('You are successfully regiseter to RentCar.','Regostration Done.');
+      }
+      else{
+        this.toastr.error('Please try again.','Registration Failed.');
+      }
+    }, er =>{
+      this.toastr.info("Email is already exist! Please try other email.",'Registration Failed');
     })
   }
 
-  confirmPaswordValidator = (control: FormControl) : { [s: string]: boolean } => {
-    if(!control.value){
-      return {required: true};
-    }
-    else if(control.value !== this.registerForm.controls['password'].value){
-      return { confirm: true, error: true}
-    }
-    return {}
+  resetForm(){
+    this.form.reset()
   }
-
-  register(){
-    if(this.registerForm==null){
-      console.log("Error");
-    }
-    else{
-      this.authServe.register(this.registerForm.value).subscribe(res=>{
-        this.clearForm()
-        console.log(res)
-      })
-    }
-  }
-
-  clearForm(){
-    this.registerForm.reset()
-  }
-
 
 }
-
-

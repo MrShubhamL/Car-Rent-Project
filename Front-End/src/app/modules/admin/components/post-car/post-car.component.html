@@ -1,0 +1,128 @@
+<div class="col-md-6 offset-md-3 mt-3 mb-5 login-form-1 p-3">
+    <h3>ADD CAR DETAILS</h3>
+    <form [formGroup]="postCarForm" (ngSubmit)="postCar()" enctype="multipart/form-data">
+      <div class="form-group mb-2">
+        <div class="text-center">
+          <label *ngIf="selectedFile" class="form-label text-center">
+            <img
+            class="
+             img-thumbnail
+             align-item-center
+             carImg
+             justify-content-center
+             "
+             [src]="imagePreview" alt="Loading..">
+          </label>
+        </div>
+        <input type="file" id="upload-car-image"
+          multiple="multiple"
+          (change)="onFileSelected($event)"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['image'].errors }"
+          formControlName="image"
+          />
+          @if (submitted && f['image'].errors) {
+            <label class="form-label mt-1 text-danger">Image is required!</label>
+           }
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 form-group mb-2">
+          <label class="form-label">Select Brand Type</label>
+          <select class="form-select" formControlName="brand"
+            aria-label="Select brand name" aria-placeholder="Select Brand Name"
+            [ngClass]="{ 'is-invalid': submitted && f['brand'].errors }">
+            <option *ngFor="let brand of listOfBrand" value="{{brand}}">{{brand}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 form-group mb-2">
+          <label class="form-label">Enter Car Name</label>
+          <input type="text"
+          formControlName="name"
+          placeholder="Car name"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+          >
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 form-group mb-2">
+          <label class="form-label">Select Fuel Type</label>
+          <select class="form-select" formControlName="type"
+            aria-label="Select Fule type" aria-placeholder="Select Fule type"
+            [ngClass]="{ 'is-invalid': submitted && f['type'].errors }">
+            <option *ngFor="let type of listOfType" value="{{type}}">{{type}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 form-group mb-2">
+          <label class="form-label">Select Transmission Type</label>
+          <select class="form-select" formControlName="transmission"
+            aria-label="Select Transmission type" aria-placeholder="Select Transmission type"
+            [ngClass]="{ 'is-invalid': submitted && f['transmission'].errors }">
+            <option *ngFor="let Transmission of listOfTransmission" value="{{Transmission}}">{{Transmission}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 form-group mb-2">
+          <label class="form-label">Select Color</label>
+          <select class="form-select" formControlName="color"
+            aria-label="Select Color" aria-placeholder="Select Color"
+            [ngClass]="{ 'is-invalid': submitted && f['color'].errors }">
+            <option *ngFor="let color of listOfColors" value="{{color}}">{{color}}</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 form-group mb-2">
+          <label class="form-label">Select Model Year</label>
+          <input id="year-picker"
+          type="date"
+          formControlName="modelYear"
+          placeholder="Car name"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['modelYear'].errors }"
+          >
+        </div>
+      </div>
+
+      <div class="form-group mb-2">
+        <label class="form-label" for="floatingTextarea2">Car Description</label>
+        <textarea class="form-control"
+        placeholder="Car Description"
+        id="floatingTextarea2"
+        style="height: 100px"
+        [ngClass]="{ 'is-invalid': submitted && f['description'].errors }"
+        formControlName="description"
+        >
+        </textarea>
+      </div>
+
+      <div class="form-group mb-2">
+        <label class="form-label">Car Price</label>
+        <input id="year-picker"
+        type="number"
+        formControlName="price"
+        placeholder="Car Price"
+        class="form-control"
+        (change)="checkValidation()"
+        [ngClass]="{ 'is-invalid': submitted && f['price'].errors }"
+        >
+      </div>
+
+
+
+
+      <div class="form-group mb-2">
+        <a mat-stroked-button color="primary" (click)="resetForm()">Reset Form</a>
+        <button mat-raised-button type="submit" color="primary"
+        [disabled]="postCarForm.invalid"
+        class="mx-2"
+        >ADD CAR</button>
+      </div>
+
+    </form>
+</div>
